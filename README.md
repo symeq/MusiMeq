@@ -23,7 +23,7 @@ A powerful, ad-free music player built with Flutter. Stream music directly from 
 * **Sleep Timer:** Fall asleep to music without draining your battery.
 
 ## 🚀 Download
-Get the latest APK from the [Releases Page](https://github.com/YOUR-USERNAME/MusiBoom/releases).
+Get the latest APK from the [Releases Page](https://github.com/symeq/MusiBoom/releases/tag/v1.0.0).
 
 ## 🛠️ Built With
 * [Flutter](https://flutter.dev/)
