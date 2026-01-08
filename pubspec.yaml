@@ -1,0 +1,46 @@
+name: musiboom
+description: "A new Flutter project."
+publish_to: 'none' 
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  youtube_explode_dart: ^3.0.0
+  just_audio: ^0.10.5
+  permission_handler: ^12.0.1
+  just_audio_background: ^0.0.1-beta.17
+  shared_preferences: ^2.3.2
+  audio_session: ^0.2.2
+  rxdart: ^0.28.0
+  audio_video_progress_bar: ^2.0.3
+  dio: ^5.9.0
+  path_provider: ^2.1.5
+  google_fonts: ^6.1.0
+  flutter_spinkit: ^5.1.0
+  http: ^1.2.0
+  xml: ^6.5.0
+  url_launcher: ^6.2.0
+  speech_to_text: ^7.3.0
+  palette_generator: ^0.3.3
+  shimmer: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
+flutter:
+  uses-material-design: true
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/logo_music.png"  # ✅ Remove 'musiboom/' prefix
+  min_sdk_android: 21
+  adaptive_icon_background: "#0A0A12"
+  adaptive_icon_foreground: "assets/icon/logo_music.png" # ✅ Remove 'musiboom/' prefix
