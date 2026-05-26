@@ -7,7 +7,7 @@ class AppColors {
   static const Color electricBlue = Color(0xFF00D4FF);
   static const Color neonMagenta = Color(0xFFFF2D92);
   static const Color vibrantGreen = Color(0xFF00FF7F);
-  
+
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [electricBlue, neonMagenta],
@@ -17,9 +17,9 @@ class AppColors {
 }
 
 // --- 2. THE ANIMATED BACKGROUND WRAPPER ---
-class MusiBoomBackground extends StatelessWidget {
+class MusiMeqBackground extends StatelessWidget {
   final Widget child;
-  const MusiBoomBackground({super.key, required this.child});
+  const MusiMeqBackground({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -216,15 +216,16 @@ class SectionHeader extends StatelessWidget {
 }
 
 // --- 6. ANIMATED BACKGROUND (Drifting Orbs) ---
-class AnimatedMusiBoomBackground extends StatefulWidget {
+class AnimatedMusiMeqBackground extends StatefulWidget {
   final Widget child;
-  const AnimatedMusiBoomBackground({super.key, required this.child});
+  const AnimatedMusiMeqBackground({super.key, required this.child});
 
   @override
-  State<AnimatedMusiBoomBackground> createState() => _AnimatedMusiBoomBackgroundState();
+  State<AnimatedMusiMeqBackground> createState() =>
+      _AnimatedMusiMeqBackgroundState();
 }
 
-class _AnimatedMusiBoomBackgroundState extends State<AnimatedMusiBoomBackground>
+class _AnimatedMusiMeqBackgroundState extends State<AnimatedMusiMeqBackground>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -252,8 +253,8 @@ class _AnimatedMusiBoomBackgroundState extends State<AnimatedMusiBoomBackground>
           animation: _controller,
           builder: (context, child) {
             return Positioned(
-              top: -100 + (_controller.value * 150), 
-              left: -100 + (_controller.value * 100), 
+              top: -100 + (_controller.value * 150),
+              left: -100 + (_controller.value * 100),
               child: child!,
             );
           },
@@ -277,7 +278,7 @@ class _AnimatedMusiBoomBackgroundState extends State<AnimatedMusiBoomBackground>
           animation: _controller,
           builder: (context, child) {
             return Positioned(
-              bottom: -100 + (_controller.value * 100), 
+              bottom: -100 + (_controller.value * 100),
               right: -100 + (_controller.value * 150),
               child: child!,
             );
@@ -339,7 +340,7 @@ class GlassBottomBar extends StatelessWidget {
 
   Widget _buildNavItem(IconData icon, String label, int index) {
     final isSelected = selectedIndex == index;
-    final primaryColor = AppColors.electricBlue; 
+    final primaryColor = AppColors.electricBlue;
     final mutedColor = Colors.white.withOpacity(0.5);
 
     return GestureDetector(
@@ -357,7 +358,10 @@ class GlassBottomBar extends StatelessWidget {
               size: 24,
               color: isSelected ? primaryColor : mutedColor,
               shadows: isSelected
-                  ? [Shadow(color: primaryColor.withOpacity(0.6), blurRadius: 8)]
+                  ? [
+                      Shadow(
+                          color: primaryColor.withOpacity(0.6), blurRadius: 8)
+                    ]
                   : [],
             ),
             const SizedBox(height: 4),
@@ -417,12 +421,12 @@ class GlassTextField extends StatelessWidget {
           hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
           border: InputBorder.none,
           icon: const Icon(Icons.search, color: AppColors.electricBlue),
-          suffixIcon: onSuffixTap != null 
-            ? IconButton(
-                icon: const Icon(Icons.send, color: Colors.white),
-                onPressed: onSuffixTap,
-              )
-            : null,
+          suffixIcon: onSuffixTap != null
+              ? IconButton(
+                  icon: const Icon(Icons.send, color: Colors.white),
+                  onPressed: onSuffixTap,
+                )
+              : null,
         ),
         onSubmitted: onSubmitted,
       ),
@@ -456,11 +460,8 @@ class AlbumArt extends StatelessWidget {
           width: size,
           height: size,
           color: Colors.white.withOpacity(0.1),
-          child: Icon(
-            Icons.music_note, 
-            color: Colors.white.withOpacity(0.5), 
-            size: size * 0.5
-          ),
+          child: Icon(Icons.music_note,
+              color: Colors.white.withOpacity(0.5), size: size * 0.5),
         ),
       ),
     );
@@ -474,19 +475,28 @@ class NeonFlickerRoute extends PageRouteBuilder {
   NeonFlickerRoute({required this.page})
       : super(
           pageBuilder: (context, animation, secondaryAnimation) => page,
-          transitionDuration: const Duration(milliseconds: 700), // Time to "ignite"
-          reverseTransitionDuration: const Duration(milliseconds: 300), // Faster exit
+          transitionDuration:
+              const Duration(milliseconds: 700), // Time to "ignite"
+          reverseTransitionDuration:
+              const Duration(milliseconds: 300), // Faster exit
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            
             // This sequence mimics a cold neon tube starting up:
             // Off -> Flash -> Dim -> Flash -> Stabilize
             var flickerTween = TweenSequence<double>([
-              TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 1),  // Start Black
-              TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.8), weight: 5),  // ⚡ FLASH 1
-              TweenSequenceItem(tween: Tween(begin: 0.8, end: 0.2), weight: 10), // Dim out
-              TweenSequenceItem(tween: Tween(begin: 0.2, end: 1.0), weight: 15), // ⚡ FLASH 2
-              TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.6), weight: 10), // Flicker dim
-              TweenSequenceItem(tween: Tween(begin: 0.6, end: 1.0), weight: 60), // Stabilize ON
+              TweenSequenceItem(
+                  tween: Tween(begin: 0.0, end: 0.0), weight: 1), // Start Black
+              TweenSequenceItem(
+                  tween: Tween(begin: 0.0, end: 0.8), weight: 5), // ⚡ FLASH 1
+              TweenSequenceItem(
+                  tween: Tween(begin: 0.8, end: 0.2), weight: 10), // Dim out
+              TweenSequenceItem(
+                  tween: Tween(begin: 0.2, end: 1.0), weight: 15), // ⚡ FLASH 2
+              TweenSequenceItem(
+                  tween: Tween(begin: 1.0, end: 0.6),
+                  weight: 10), // Flicker dim
+              TweenSequenceItem(
+                  tween: Tween(begin: 0.6, end: 1.0),
+                  weight: 60), // Stabilize ON
             ]);
 
             return FadeTransition(

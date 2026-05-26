@@ -31,16 +31,16 @@ class StreamFlowApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'MusiBoom',
+      title: 'MusiMeq',
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF0A0A12), 
-        primaryColor: const Color(0xFF00D4FF), 
+        scaffoldBackgroundColor: const Color(0xFF0A0A12),
+        primaryColor: const Color(0xFF00D4FF),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent, 
+          backgroundColor: Colors.transparent,
           elevation: 0,
         ),
       ),
-      home: const MainScreen(), 
+      home: const MainScreen(),
     );
   }
 }

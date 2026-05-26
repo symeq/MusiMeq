@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // ✅ For Status Bar
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/design_components.dart'; // Uses GlassCard & AppColors
-import '../services/download_service.dart'; 
+import '../services/download_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -26,7 +26,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _isSmartDownloadEnabled = prefs.getBool('smart_download_enabled') ?? false;
+      _isSmartDownloadEnabled =
+          prefs.getBool('smart_download_enabled') ?? false;
     });
   }
 
@@ -62,13 +63,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Nah, keep 'em", style: TextStyle(color: Colors.white38)),
+            child: const Text("Nah, keep 'em",
+                style: TextStyle(color: Colors.white38)),
           ),
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
               await _downloadService.clearCache();
-              _refreshStorageInfo(); 
+              _refreshStorageInfo();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("All clean and shiny! ✨🧹"),
@@ -77,7 +79,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               );
             },
-            child: const Text("Yes, Sweep!", style: TextStyle(color: AppColors.electricBlue)),
+            child: const Text("Yes, Sweep!",
+                style: TextStyle(color: AppColors.electricBlue)),
           ),
         ],
       ),
@@ -90,7 +93,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF1E1E1E),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text("Start Fresh? 🌱", style: TextStyle(color: Colors.white)),
+        title: const Text("Start Fresh? 🌱",
+            style: TextStyle(color: Colors.white)),
         content: const Text(
           "This will remove EVERY song from your library. Are you sure you want a blank slate?",
           style: TextStyle(color: Colors.white70),
@@ -98,22 +102,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Wait, no!", style: TextStyle(color: Colors.white38)),
+            child: const Text("Wait, no!",
+                style: TextStyle(color: Colors.white38)),
           ),
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
               await _downloadService.clearAll();
-              _refreshStorageInfo(); 
+              _refreshStorageInfo();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text("Poof! Library is empty. Time to discover new tunes! 🎶"),
+                  content: Text(
+                      "Poof! Library is empty. Time to discover new tunes! 🎶"),
                   backgroundColor: Colors.redAccent,
                   behavior: SnackBarBehavior.floating,
                 ),
               );
             },
-            child: const Text("Wipe Everything", style: TextStyle(color: Colors.redAccent)),
+            child: const Text("Wipe Everything",
+                style: TextStyle(color: Colors.redAccent)),
           ),
         ],
       ),
@@ -168,7 +175,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             borderRadius: 50,
                             opacity: 0.1,
                             padding: const EdgeInsets.all(10),
-                            child: const Icon(Icons.arrow_back_rounded, color: Colors.white, size: 24),
+                            child: const Icon(Icons.arrow_back_rounded,
+                                color: Colors.white, size: 24),
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -193,23 +201,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         // --- PREFERENCES ---
                         const Padding(
                           padding: EdgeInsets.only(left: 8, bottom: 10),
-                          child: Text("MY PREFERENCES", style: TextStyle(color: AppColors.electricBlue, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1.5)),
+                          child: Text("MY PREFERENCES",
+                              style: TextStyle(
+                                  color: AppColors.electricBlue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  letterSpacing: 1.5)),
                         ),
-                        
+
                         GlassCard(
                           borderRadius: 20,
                           opacity: 0.05,
                           padding: EdgeInsets.zero,
                           child: SwitchListTile(
                             activeColor: AppColors.electricBlue,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 8),
                             title: const Text(
                               "Smart Download",
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
                             ),
                             subtitle: Text(
                               "Automatically save songs you listen to 🎧",
-                              style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12),
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.5),
+                                  fontSize: 12),
                             ),
                             value: _isSmartDownloadEnabled,
                             onChanged: _toggleSmartDownload,
@@ -221,7 +239,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         // --- STORAGE ---
                         const Padding(
                           padding: EdgeInsets.only(left: 8, bottom: 10),
-                          child: Text("STORAGE SPACE", style: TextStyle(color: AppColors.electricBlue, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1.5)),
+                          child: Text("STORAGE SPACE",
+                              style: TextStyle(
+                                  color: AppColors.electricBlue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  letterSpacing: 1.5)),
                         ),
 
                         GlassCard(
@@ -232,26 +255,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             children: [
                               // Usage Stat
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Row(
                                     children: [
-                                      Icon(Icons.sd_storage_rounded, color: Colors.white70),
+                                      Icon(Icons.sd_storage_rounded,
+                                          color: Colors.white70),
                                       SizedBox(width: 12),
-                                      Text("Space Used", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500)),
+                                      Text("Space Used",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500)),
                                     ],
                                   ),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
-                                      color: AppColors.vibrantGreen.withOpacity(0.15),
+                                      color: AppColors.vibrantGreen
+                                          .withOpacity(0.15),
                                       borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: AppColors.vibrantGreen.withOpacity(0.3)),
+                                      border: Border.all(
+                                          color: AppColors.vibrantGreen
+                                              .withOpacity(0.3)),
                                     ),
-                                    child: Text(
-                                      _storageUsed, 
-                                      style: const TextStyle(color: AppColors.vibrantGreen, fontWeight: FontWeight.bold, fontSize: 14)
-                                    ),
+                                    child: Text(_storageUsed,
+                                        style: const TextStyle(
+                                            color: AppColors.vibrantGreen,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14)),
                                   ),
                                 ],
                               ),
@@ -260,18 +294,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               // Clear Cache Button
                               ListTile(
                                 contentPadding: EdgeInsets.zero,
-                                title: const Text("Tidy Up Cache", style: TextStyle(color: Colors.white)),
-                                subtitle: const Text("Clears temporary files 🧹", style: TextStyle(color: Colors.white38, fontSize: 12)),
-                                trailing: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white24, size: 16),
+                                title: const Text("Tidy Up Cache",
+                                    style: TextStyle(color: Colors.white)),
+                                subtitle: const Text(
+                                    "Clears temporary files 🧹",
+                                    style: TextStyle(
+                                        color: Colors.white38, fontSize: 12)),
+                                trailing: const Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: Colors.white24,
+                                    size: 16),
                                 onTap: _confirmClearCache,
                               ),
 
                               // Delete All Button
                               ListTile(
                                 contentPadding: EdgeInsets.zero,
-                                title: const Text("Reset Library", style: TextStyle(color: Colors.redAccent)),
-                                subtitle: const Text("Deletes all songs 🗑️", style: TextStyle(color: Colors.white38, fontSize: 12)),
-                                trailing: const Icon(Icons.delete_forever_rounded, color: Colors.redAccent, size: 20),
+                                title: const Text("Reset Library",
+                                    style: TextStyle(color: Colors.redAccent)),
+                                subtitle: const Text("Deletes all songs 🗑️",
+                                    style: TextStyle(
+                                        color: Colors.white38, fontSize: 12)),
+                                trailing: const Icon(
+                                    Icons.delete_forever_rounded,
+                                    color: Colors.redAccent,
+                                    size: 20),
                                 onTap: _confirmDeleteAll,
                               ),
                             ],
@@ -279,14 +326,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
 
                         const SizedBox(height: 40),
-                        
+
                         // FOOTER
                         Center(
                           child: Column(
                             children: [
-                              Text("MusiBoom v1.0.0", style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 12)),
+                              Text("MusiMeq v1.0.0",
+                                  style: TextStyle(
+                                      color: Colors.white.withOpacity(0.3),
+                                      fontSize: 12)),
                               const SizedBox(height: 4),
-                              Text("Made with 💙", style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 12)),
+                              Text("Made with 💙",
+                                  style: TextStyle(
+                                      color: Colors.white.withOpacity(0.2),
+                                      fontSize: 12)),
                             ],
                           ),
                         ),

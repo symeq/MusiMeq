@@ -1,4 +1,4 @@
-package com.example.musiboom
+package com.example.musimeq
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,5 @@
-import 'dart:async';  // Add this for timeout
+import 'dart:async';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -13,7 +14,7 @@ class DownloadService {
   Future<String> _getFilePath(String videoId) async {
     final directory = await getApplicationDocumentsDirectory();
     // Use .mp4 for muxed streams
-    return '${directory.path}/$videoId.mp4'; 
+    return '${directory.path}/$videoId.mp3'; 
   }
 
   Future<bool> isDownloaded(String videoId) async {
@@ -48,7 +49,6 @@ class DownloadService {
     }
   }
 
-  // UPDATED: Use ONLY muxed streams for reliability, with enhanced debugging and timeout
   Future<void> _performDownload(Video video, {required bool isManual}) async {
     final savePath = await _getFilePath(video.id.value);
     final tempFile = File('$savePath.tmp');
@@ -57,17 +57,41 @@ class DownloadService {
     try {
       print("💾 START ${isManual ? 'Download' : 'Cache'}: ${video.title}...");
 
-      var manifest = await _yt.videos.streamsClient.getManifest(video.id.value);
+      // 1. Fetch the direct MP3 URL from your RapidAPI 📞
+      final videoId = video.id.value;
+      final apiUrl = Uri.parse('https://youtube-mp36.p.rapidapi.com/dl?id=$videoId');
       
-      // USE MUXED STREAMS ONLY (video + audio combined)
-      var streamInfo = manifest.muxed.sortByBitrate().first;  // Lowest bitrate for smaller size
-      print("ℹ️ Using MUXED stream: ${streamInfo.container.name} (${streamInfo.size.totalBytes / 1024 / 1024} MB)");
+      final apiResponse = await http.get(
+        apiUrl,
+        headers: {
+          'X-RapidAPI-Key': 'c8db22c063mshf03809e75159f42p172ae4jsn7ebe14d1c82f',
+          'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com',
+        },
+      );
 
-      var stream = _yt.videos.streamsClient.get(streamInfo);
+      String? downloadUrl;
+      if (apiResponse.statusCode == 200) {
+        final data = jsonDecode(apiResponse.body);
+        if (data['link'] != null) {
+          downloadUrl = data['link'] as String;
+        }
+      }
+
+      if (downloadUrl == null || downloadUrl.isEmpty) {
+        throw Exception("Could not fetch MP3 download path from API.");
+      }
+
+      // 2. Open HTTP stream connection to download the audio track binary payload 🚀
+      final client = http.Client();
+      final request = http.Request('GET', Uri.parse(downloadUrl));
+      final response = await client.send(request).timeout(const Duration(minutes: 3));
+
+      print("ℹ️ Using API MP3 stream (${(response.contentLength ?? 0) / 1024 / 1024} MB)");
+
       fileSink = tempFile.openWrite();
 
-      // DOWNLOAD LOOP WITH TIMEOUT AND FORCED PROGRESS
-      int totalBytes = streamInfo.size.totalBytes;
+      // DOWNLOAD LOOP WITH TIMEOUT AND FORCED PROGRESS (Your original engine mechanics)
+      int totalBytes = response.contentLength ?? 0; // Grab dynamic headers size
       int receivedBytes = 0;
       int lastPrint = 0;
       int chunkCount = 0;
@@ -90,7 +114,8 @@ class DownloadService {
         }
       });
 
-      await for (var chunk in stream) {
+      // Stream chunks from our new HTTP client connection
+      await for (var chunk in response.stream) {
         fileSink.add(chunk);
         receivedBytes += chunk.length;
         chunkCount++;
@@ -121,9 +146,10 @@ class DownloadService {
       await fileSink.flush();
       await fileSink.close();
       fileSink = null;
+      client.close(); // Safely dispose HTTP client session
 
-      // VALIDATE
-      if (receivedBytes < 100000) {  // Less than 100KB? Failed
+      // VALIDATE (Lowered payload limit since MP3 tracks are lighter than old combined videos)
+      if (receivedBytes < 20000) {  
         print("❌ Download incomplete: Only ${receivedBytes} bytes received.");
         if (await tempFile.exists()) await tempFile.delete();
         return;
@@ -136,7 +162,7 @@ class DownloadService {
       await tempFile.rename(savePath);
 
       await _saveMetadata(video, isManual);
-      print("✅ DOWNLOAD COMPLETE: ${video.title} (${receivedBytes / 1024 / 1024} MB) - Muxed");
+      print("✅ DOWNLOAD COMPLETE: ${video.title} (${(receivedBytes / 1024 / 1024).toStringAsFixed(1)} MB) - Pure MP3");
 
     } catch (e) {
       print("❌ DOWNLOAD FAILED: $e");
@@ -240,7 +266,7 @@ class DownloadService {
         final List<FileSystemEntity> files = directory.listSync();
         for (var file in files) {
           // Count only our music files (.mp4 for muxed)
-          if (file is File && file.path.endsWith('.mp4')) {
+          if (file is File && file.path.endsWith('.mp3')) {
             totalBytes += await file.length();
           }
         }

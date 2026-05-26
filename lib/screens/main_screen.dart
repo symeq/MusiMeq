@@ -34,26 +34,32 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MusiBoomBackground(
+      body: MusiMeqBackground(
         child: Stack(
           children: [
             // --- MAIN CONTENT WITH NEON FLICKER ---
             Positioned.fill(
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 600), // Total flicker time
-                reverseDuration: const Duration(milliseconds: 200), // Exit speed
+                duration:
+                    const Duration(milliseconds: 600), // Total flicker time
+                reverseDuration:
+                    const Duration(milliseconds: 200), // Exit speed
                 switchInCurve: Curves.linear,
                 switchOutCurve: Curves.easeIn,
                 transitionBuilder: (Widget child, Animation<double> animation) {
-
-                  
                   final flicker = TweenSequence<double>([
-                    TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 10),
-                    TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 20),
-                    TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.3), weight: 10),
-                    TweenSequenceItem(tween: Tween(begin: 0.3, end: 1.0), weight: 20),
-                    TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.5), weight: 10),
-                    TweenSequenceItem(tween: Tween(begin: 0.5, end: 1.0), weight: 30),
+                    TweenSequenceItem(
+                        tween: Tween(begin: 0.0, end: 0.0), weight: 10),
+                    TweenSequenceItem(
+                        tween: Tween(begin: 0.0, end: 1.0), weight: 20),
+                    TweenSequenceItem(
+                        tween: Tween(begin: 1.0, end: 0.3), weight: 10),
+                    TweenSequenceItem(
+                        tween: Tween(begin: 0.3, end: 1.0), weight: 20),
+                    TweenSequenceItem(
+                        tween: Tween(begin: 1.0, end: 0.5), weight: 10),
+                    TweenSequenceItem(
+                        tween: Tween(begin: 0.5, end: 1.0), weight: 30),
                   ]);
 
                   return FadeTransition(
@@ -80,12 +86,12 @@ class _MainScreenState extends State<MainScreen> {
             ),
 
             // --- MINI PLAYER ---
-             const Positioned(
-               left: 16,
-               right: 16,
-               bottom: 90, // Above the bottom bar
-               child: MiniPlayer(),
-             ),
+            const Positioned(
+              left: 16,
+              right: 16,
+              bottom: 90, // Above the bottom bar
+              child: MiniPlayer(),
+            ),
           ],
         ),
       ),
