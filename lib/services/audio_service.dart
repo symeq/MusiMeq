@@ -35,8 +35,6 @@ class AudioService {
     });
   }
 
-  final YoutubeExplode _yt = YoutubeExplode();
-
   // --- UI Notifiers ---
   final ValueNotifier<String> currentThumbnail = ValueNotifier("");
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
